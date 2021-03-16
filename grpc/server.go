@@ -3,11 +3,16 @@ package grpc
 import (
 	"context"
 	"fmt"
+	"github.com/golang/protobuf/ptypes"
+	"github.com/pingcap/log"
 	"strings"
+	"time"
 
 	"github.com/dfuse-io/bstream"
 	blockstream "github.com/dfuse-io/bstream/blockstream/v2"
 	dauth "github.com/dfuse-io/dauth/authenticator"
+	redisAuth "github.com/dfuse-io/dauth/authenticator/redis"
+	pbcodec "github.com/dfuse-io/dfuse-eosio/pb/dfuse/eosio/codec/v1"
 	"github.com/dfuse-io/dgrpc"
 	"github.com/dfuse-io/dmetering"
 	"github.com/dfuse-io/dstore"
@@ -59,15 +64,45 @@ func NewServer(
 	})
 
 	blockStreamService.SetPostHook(func(ctx context.Context, response *pbbstream.BlockResponseV2) {
-		//////////////////////////////////////////////////////////////////////
-		dmetering.EmitWithContext(dmetering.Event{
-			Source:         "firehose",
-			Kind:           "gRPC Stream",
-			Method:         "Blocks",
-			EgressBytes:    int64(response.XXX_Size()),
-			ResponsesCount: 1,
-		}, ctx)
-		//////////////////////////////////////////////////////////////////////
+
+		block := &pbcodec.Block{}
+		err := ptypes.UnmarshalAny(response.Block, block)
+
+		if err != nil {
+			logger.Warn("failed to unmarshal block", zap.Error(err))
+		} else {
+			creds := dauth.GetCredentials(ctx)
+			rate := 10
+
+			switch c := creds.(type) {
+			case *redisAuth.Credentials:
+				rate = c.Rate
+			}
+
+			blockTime, err := block.Time()
+
+			// we slow down throughput if the allowed doc quota is not unlimited ("0"), unless it's live blocks (< 5 min)
+			if err == nil && time.Since(blockTime) > 5*time.Minute && rate > 0 {
+				sleep := time.Duration(1000/rate) * time.Millisecond
+				logger.Debug("rate limited, adding sleep", zap.Int("rate", rate), zap.Duration("sleep", sleep), zap.Time("block_time", blockTime))
+				time.Sleep(sleep)
+			} else {
+				if err != nil {
+					log.Warn("failed to parse time from block", zap.Error(err))
+				}
+				logger.Debug("allowing unthrottled access", zap.Int("rate", rate), zap.Time("block_time", blockTime))
+			}
+
+			//////////////////////////////////////////////////////////////////////
+			dmetering.EmitWithContext(dmetering.Event{
+				Source:         "firehose",
+				Kind:           "gRPC Stream",
+				Method:         "Blocks",
+				EgressBytes:    int64(response.XXX_Size()),
+				ResponsesCount: 1,
+			}, ctx)
+			//////////////////////////////////////////////////////////////////////
+		}
 	})
 
 	options := []dgrpc.ServerOption{
