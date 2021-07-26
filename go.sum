@@ -254,6 +254,7 @@ github.com/eoscanada/eos-go v0.9.1-0.20200507122837-271bfac45a78/go.mod h1:exxz2
 github.com/eoscanada/pitreos v1.0.1-0.20190618150521-240402eb30e2/go.mod h1:6A7XkYpqkq0DjHzakhUybMXmZeY+9E6Z1SBAWytyO0A=
 github.com/eosnationftw/dauth v0.0.0-20210316123228-0097a05cb1f6 h1:aPn5mdHiihOKbvHN/d+cvrOhzFjyTCAykHrdkqN1SA8=
 github.com/eosnationftw/dauth v0.0.0-20210316123228-0097a05cb1f6/go.mod h1:Io0yBO4QLlDuQnfUA9yqPz1iJaPk4h+g1FMXD0jkAg8=
+github.com/eosnationftw/dauth v0.0.0-20210726151717-768692231b3b/go.mod h1:Io0yBO4QLlDuQnfUA9yqPz1iJaPk4h+g1FMXD0jkAg8=
 github.com/facebookgo/ensure v0.0.0-20200202191622-63f1cf65ac4c/go.mod h1:Yg+htXGokKKdzcwhuNDwVvN+uBxDGXJ7G/VN1d8fa64=
 github.com/facebookgo/stack v0.0.0-20160209184415-751773369052/go.mod h1:UbMTZqLaRiH3MsBH8va0n7s1pQYcu3uTb8G4tygF4Zg=
 github.com/facebookgo/subset v0.0.0-20200203212716-c811ad88dec4/go.mod h1:5tD+neXqOorC30/tWg0LCSkrqj/AR6gu8yY8/fpw1q0=

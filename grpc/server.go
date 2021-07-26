@@ -39,6 +39,7 @@ func NewServer(
 	liveHeadTracker bstream.BlockRefGetter,
 	tracker *bstream.Tracker,
 	trimmer blockstream.BlockTrimmer,
+	network string,
 ) *Server {
 	liveSupport := liveSourceFactory != nil && liveHeadTracker != nil
 	logger.Info("setting up blockstream server (v2)", zap.Bool("live_support", liveSupport))
@@ -73,10 +74,21 @@ func NewServer(
 		} else {
 			creds := dauth.GetCredentials(ctx)
 			rate := 10
+			hasNetworkRateAssigned := false
 
 			switch c := creds.(type) {
 			case *redisAuth.Credentials:
-				rate = c.Rate
+				for _, n := range c.Networks {
+					if n.Name == network {
+						hasNetworkRateAssigned = true
+						rate = n.Rate
+						break
+					}
+				}
+			}
+
+			if !hasNetworkRateAssigned {
+				logger.Error("access token is missing network based rate limit, assigning 10", zap.Any("credentials", creds))
 			}
 
 			blockTime, err := block.Time()
