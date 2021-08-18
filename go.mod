@@ -1,25 +1,23 @@
-module github.com/dfuse-io/firehose
+module github.com/streamingfast/firehose
+
+go 1.15
 
 require (
 	github.com/Azure/azure-pipeline-go v0.2.2 // indirect
-	github.com/dfuse-io/bstream v0.0.2-0.20210218150906-c8e1b835d219
-	github.com/dfuse-io/dauth v0.0.0-20200601190857-60bc6a4b4665
-	github.com/dfuse-io/dfuse-eosio v0.1.1-docker
-	github.com/dfuse-io/dgrpc v0.0.0-20210424033943-10e04dd5b19c
-	github.com/dfuse-io/dmetering v0.0.0-20210112023524-c3ddadbc0d6a
-	github.com/dfuse-io/dmetrics v0.0.0-20200508170817-3b8cb01fee68
-	github.com/dfuse-io/dstore v0.1.1-0.20210203172334-dec78c6098a6
-	github.com/dfuse-io/logging v0.0.0-20210109005628-b97a57253f70
-	github.com/dfuse-io/pbgo v0.0.6-0.20210125181705-b17235518132
-	github.com/dfuse-io/shutter v1.4.1
-	github.com/golang/protobuf v1.4.2
-	github.com/pingcap/log v0.0.0-20191012051959-b742a5d432e9
+	github.com/grpc-ecosystem/go-grpc-middleware v1.1.0 // indirect
+	github.com/streamingfast/bstream v0.0.2-0.20210811181043-4c1920a7e3e3
+	github.com/streamingfast/dauth v0.0.0-20210811181149-e8fd545948cc
+	github.com/streamingfast/dgrpc v0.0.0-20210811180351-8646818518b2
+	github.com/streamingfast/dmetering v0.0.0-20210811181351-eef120cfb817
+	github.com/streamingfast/dmetrics v0.0.0-20210811180524-8494aeb34447
+	github.com/streamingfast/dstore v0.1.1-0.20210811180812-4db13e99cc22
+	github.com/streamingfast/logging v0.0.0-20210811175431-f3b44b61606a
+	github.com/streamingfast/pbgo v0.0.6-0.20210811160400-7c146c2db8cc
+	github.com/streamingfast/shutter v1.5.0
 	go.uber.org/atomic v1.6.0
 	go.uber.org/zap v1.15.0
-	google.golang.org/grpc v1.29.1
+	google.golang.org/grpc v1.39.1
 )
-
-go 1.13
 
 // This is required to fix build where 0.1.0 version is not considered a valid version because a v0 line does not exists
 // We replace with same commit, simply tricking go and tell him that's it's actually version 0.0.3

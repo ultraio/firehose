@@ -8,16 +8,16 @@ import (
 	"strings"
 	"time"
 
-	"github.com/dfuse-io/bstream"
-	blockstream "github.com/dfuse-io/bstream/blockstream/v2"
-	dauth "github.com/dfuse-io/dauth/authenticator"
+	"github.com/streamingfast/bstream"
+	blockstream "github.com/streamingfast/bstream/blockstream/v2"
+	"github.com/streamingfast/dgrpc"
+	"github.com/streamingfast/dstore"
+	pbbstream "github.com/streamingfast/pbgo/dfuse/bstream/v1"
 	redisAuth "github.com/dfuse-io/dauth/authenticator/redis"
 	pbcodec "github.com/dfuse-io/dfuse-eosio/pb/dfuse/eosio/codec/v1"
-	"github.com/dfuse-io/dgrpc"
-	"github.com/dfuse-io/dmetering"
-	"github.com/dfuse-io/dstore"
-	"github.com/dfuse-io/firehose"
-	pbbstream "github.com/dfuse-io/pbgo/dfuse/bstream/v1"
+	dauth "github.com/streamingfast/dauth/authenticator"
+	"github.com/streamingfast/dmetering"
+	"github.com/streamingfast/firehose"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 )
@@ -128,7 +128,7 @@ func NewServer(
 		options = append(options, dgrpc.PlainTextServer())
 	}
 
-	options = append(options, dgrpc.WithAuthChecker(authenticator.Check, authenticator.IsAuthenticationTokenRequired()))
+	options = append(options, dgrpc.WithAuthChecker(authenticator.Check, authenticator.GetAuthTokenRequirement() == dauth.AuthTokenRequired))
 
 	grpcServer := dgrpc.NewServer2(options...)
 
