@@ -20,6 +20,7 @@ import (
 	pbbstream "github.com/streamingfast/pbgo/dfuse/bstream/v1"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
+	"google.golang.org/protobuf/proto"
 )
 
 type Server struct {
@@ -110,7 +111,7 @@ func NewServer(
 				Source:         "firehose",
 				Kind:           "gRPC Stream",
 				Method:         "Blocks",
-				EgressBytes:    int64(response.XXX_Size()),
+				EgressBytes: int64(proto.Size(response)),
 				ResponsesCount: 1,
 			}, ctx)
 			//////////////////////////////////////////////////////////////////////
