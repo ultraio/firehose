@@ -111,7 +111,7 @@ func NewServer(
 				Source:         "firehose",
 				Kind:           "gRPC Stream",
 				Method:         "Blocks",
-				EgressBytes: int64(proto.Size(response)),
+				EgressBytes:    int64(proto.Size(response)),
 				ResponsesCount: 1,
 			}, ctx)
 			//////////////////////////////////////////////////////////////////////
@@ -121,6 +121,8 @@ func NewServer(
 	options := []dgrpc.ServerOption{
 		dgrpc.WithLogger(logger),
 		dgrpc.WithHealthCheck(dgrpc.HealthCheckOverGRPC|dgrpc.HealthCheckOverHTTP, createHealthCheck(isReady)),
+		dgrpc.WithAuthChecker(authenticator.Check, authenticator.GetAuthTokenRequirement() == dauth.AuthTokenRequired),
+		dgrpc.WithGrpcServerOption(grpc.MaxRecvMsgSize(100 * 1024 * 1024)),
 	}
 
 	if strings.Contains(listenAddr, "*") {
@@ -128,9 +130,6 @@ func NewServer(
 	} else {
 		options = append(options, dgrpc.PlainTextServer())
 	}
-
-	options = append(options, dgrpc.WithAuthChecker(authenticator.Check, authenticator.GetAuthTokenRequirement() == dauth.AuthTokenRequired))
-
 	grpcServer := dgrpc.NewServer2(options...)
 
 	logger.Info("registering grpc services")

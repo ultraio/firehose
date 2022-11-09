@@ -16,7 +16,7 @@ require (
 	github.com/streamingfast/pbgo v0.0.6-0.20210820205306-ba5335146052
 	github.com/streamingfast/shutter v1.5.0
 	go.uber.org/atomic v1.7.0
-	go.uber.org/zap v1.17.0
+	go.uber.org/zap v1.21.0
 	google.golang.org/grpc v1.39.1
 	google.golang.org/protobuf v1.27.1
 )
@@ -25,4 +25,6 @@ require (
 // We replace with same commit, simply tricking go and tell him that's it's actually version 0.0.3
 replace github.com/census-instrumentation/opencensus-proto v0.1.0-0.20181214143942-ba49f56771b8 => github.com/census-instrumentation/opencensus-proto v0.0.3-0.20181214143942-ba49f56771b8
 
-replace github.com/streamingfast/dauth => github.com/eosnationftw/dauth v0.0.0-20210818092801-fb989ed88d76
+replace github.com/streamingfast/dauth => github.com/EOS-Nation/dauth v0.0.0-20221005084741-e79ebf7b78e8
+
+replace github.com/streamingfast/dgrpc => github.com/EOS-Nation/dgrpc v0.0.0-20221108170744-d0c2d8abe98f
