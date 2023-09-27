@@ -75,13 +75,13 @@ func NewServer(
 		} else {
 			creds := dauth.GetCredentials(ctx)
 			rate := 2000 /*ultra-duncan---BLOCK-1844 increase rate limit */
-			hasNetworkRateAssigned := false
+			// hasNetworkRateAssigned := false
 
 			switch c := creds.(type) {
 			case *redisAuth.Credentials:
 				for _, n := range c.Networks {
 					if n.Name == network {
-						hasNetworkRateAssigned = true
+						// hasNetworkRateAssigned = true
 						rate = n.Rate
 						break
 					}
