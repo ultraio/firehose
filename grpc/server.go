@@ -74,7 +74,7 @@ func NewServer(
 			logger.Warn("failed to unmarshal block", zap.Error(err))
 		} else {
 			creds := dauth.GetCredentials(ctx)
-			rate := 10
+			rate := 2000 /*ultra-duncan---BLOCK-1844 increase rate limit */
 			hasNetworkRateAssigned := false
 
 			switch c := creds.(type) {
@@ -88,9 +88,10 @@ func NewServer(
 				}
 			}
 
-			if !hasNetworkRateAssigned {
-				logger.Error("access token is missing network based rate limit, assigning 10", zap.Any("credentials", creds))
-			}
+			/*ultra-duncan---BLOCK-1844 comment this error to prevent unnecessary log */
+			// if !hasNetworkRateAssigned {
+			// 	logger.Error("access token is missing network based rate limit, assigning 10", zap.Any("credentials", creds))
+			// }
 
 			blockTime, err := block.Time()
 
