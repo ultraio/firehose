@@ -74,7 +74,7 @@ func NewServer(
 			logger.Warn("failed to unmarshal block", zap.Error(err))
 		} else {
 			creds := dauth.GetCredentials(ctx)
-			rate := 2000 /*ultra-duncan---BLOCK-1844 increase rate limit */
+			rate := 1000 /*ultra-duncan---BLOCK-1844 increase rate limit */
 			// hasNetworkRateAssigned := false
 
 			switch c := creds.(type) {
