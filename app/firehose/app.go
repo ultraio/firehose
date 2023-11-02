@@ -126,7 +126,7 @@ func (a *App) Run() error {
 		a.modules.Tracker,
 		a.modules.BlockTrimmer,
 		a.config.Network,
-		a.config.ratelimit,
+		a.config.RateLimit,
 	)
 
 	a.OnTerminating(func(_ error) { server.Shutdown(a.config.GRPCShutdownGracePeriod) })
