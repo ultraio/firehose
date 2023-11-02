@@ -40,7 +40,7 @@ type Config struct {
 	GRPCShutdownGracePeriod time.Duration // The duration we allow for gRPC connections to terminate gracefully prior forcing shutdown
 	RealtimeTolerance       time.Duration
 	Network                 string
-	Ratelimit               int
+	RateLimit               int
 }
 
 type Modules struct {
