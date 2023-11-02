@@ -41,6 +41,7 @@ func NewServer(
 	tracker *bstream.Tracker,
 	trimmer blockstream.BlockTrimmer,
 	network string,
+	ratelimit int,
 ) *Server {
 	liveSupport := liveSourceFactory != nil && liveHeadTracker != nil
 	logger.Info("setting up blockstream server (v2)", zap.Bool("live_support", liveSupport))
@@ -74,7 +75,7 @@ func NewServer(
 			logger.Warn("failed to unmarshal block", zap.Error(err))
 		} else {
 			creds := dauth.GetCredentials(ctx)
-			rate := 1000 /*ultra-duncan---BLOCK-1844 increase rate limit */
+			rate := ratelimit /*ultra-duncan---BLOCK-1844 increase rate limit */
 			// hasNetworkRateAssigned := false
 
 			switch c := creds.(type) {

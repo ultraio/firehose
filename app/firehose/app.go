@@ -40,6 +40,7 @@ type Config struct {
 	GRPCShutdownGracePeriod time.Duration // The duration we allow for gRPC connections to terminate gracefully prior forcing shutdown
 	RealtimeTolerance       time.Duration
 	Network                 string
+	RateLimit               int
 }
 
 type Modules struct {
@@ -125,6 +126,7 @@ func (a *App) Run() error {
 		a.modules.Tracker,
 		a.modules.BlockTrimmer,
 		a.config.Network,
+		a.config.RateLimit,
 	)
 
 	a.OnTerminating(func(_ error) { server.Shutdown(a.config.GRPCShutdownGracePeriod) })
